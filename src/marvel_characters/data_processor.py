@@ -48,7 +48,7 @@ class DataProcessor:
 
         # Identity
         self.df["Identity"] = self.df["Identity"].fillna("Unknown")
-        self.df = self.df[self.df["Identity"].isin(["Public", "Secret", "Unknown"])]
+        self.df = self.df.loc[self.df["Identity"].isin(["Public", "Secret", "Unknown"])].copy()
 
         # Gender
         self.df["Gender"] = self.df["Gender"].fillna("Unknown")
@@ -58,7 +58,7 @@ class DataProcessor:
         self.df.rename(columns={"Marital Status": "Marital_Status"}, inplace=True)
         self.df["Marital_Status"] = self.df["Marital_Status"].fillna("Unknown")
         self.df["Marital_Status"] = self.df["Marital_Status"].replace("Widow", "Widowed")
-        self.df = self.df[self.df["Marital_Status"].isin(["Single", "Married", "Widowed", "Engaged", "Unknown"])]
+        self.df = self.df.loc[self.df["Marital_Status"].isin(["Single", "Married", "Widowed", "Engaged", "Unknown"])].copy()
 
         # Magic
         self.df["Magic"] = self.df["Origin"].str.lower().apply(lambda x: int("magic" in x))
@@ -88,7 +88,7 @@ class DataProcessor:
 
         self.df["Origin"] = self.df["Origin"].apply(normalize_origin)
 
-        self.df = self.df[self.df["Alive"].isin(["Alive", "Dead"])]
+        self.df = self.df.loc[self.df["Alive"].isin(["Alive", "Dead"])].copy()
         self.df["Alive"] = (self.df["Alive"] == "Alive").astype(int)
 
         self.df = self.df[num_features + cat_features + [target] + ["PageID"]]
